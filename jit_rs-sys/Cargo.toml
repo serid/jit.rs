@@ -1,22 +1,20 @@
 [package]
-name = "jit_rs"
+name = "jit_rs-sys"
 version = "0.1.1"
 authors = ["serid"]
 edition = "2018"
 
 license = "MIT"
-description = "jit.rs is a library for generating, optimizing and running executable code at runtime"
+description = "Bindings for crate jit_rs"
 homepage = "https://crates.io/crates/jit_rs/"
 documentation = "https://docs.rs/jit_rs/"
 repository = "https://github.com/serid/jit.rs"
 readme = "README.md"
 
-keywords = ["jit", "compiler", "interpreter"]
-
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+windows = "0.13.0"
 
-[dependencies.jit_rs-sys]
-path = "./jit_rs-sys"
-version = "0.1.1"
+[build-dependencies]
+windows = "0.13.0"
