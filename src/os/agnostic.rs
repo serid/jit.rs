@@ -21,12 +21,14 @@ mod inline {
 #[cfg(windows)]
 mod inline {
     use jit_rs_sys::bindings::{
+        Windows::Win32::System::Diagnostics::Debug::FlushInstructionCache,
         Windows::Win32::System::Memory::MEM_COMMIT,
         Windows::Win32::System::Memory::MEM_RELEASE,
         Windows::Win32::System::Memory::MEM_RESERVE,
         Windows::Win32::System::Memory::PAGE_EXECUTE_READWRITE,
         Windows::Win32::System::Memory::VirtualAlloc,
         Windows::Win32::System::Memory::VirtualFree,
+        Windows::Win32::System::Threading::GetCurrentProcess,
     };
 
     use super::*;
@@ -38,6 +40,13 @@ mod inline {
 
     pub unsafe fn deallocate_buffer(data: *mut c_void, _size: usize) -> Result<(), ()> {
         let ok = unsafe { VirtualFree(data, 0, MEM_RELEASE) };
+
+        // Convert bool to Result<(), ()>
+        ok.as_bool().then(|| ()).ok_or(())
+    }
+
+    pub unsafe fn flush_instruction_cache(data: *mut c_void, size: usize) -> Result<(), ()> {
+        let ok = unsafe { FlushInstructionCache(GetCurrentProcess(), data, size) };
 
         // Convert bool to Result<(), ()>
         ok.as_bool().then(|| ()).ok_or(())

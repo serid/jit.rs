@@ -8,6 +8,8 @@ fn main() {
         // Windows::Win32::System::ProcessStatus::K32GetModuleBaseNameW,
         Windows::Win32::System::Memory::VirtualAlloc,
         Windows::Win32::System::Memory::VirtualFree,
+        Windows::Win32::System::Diagnostics::Debug::FlushInstructionCache,
+        Windows::Win32::System::Threading::GetCurrentProcess,
     }
     ;
 }

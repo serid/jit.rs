@@ -1,4 +1,5 @@
 use std::mem::size_of;
+use std::ffi::c_void;
 
 mod os;
 
@@ -10,8 +11,10 @@ pub unsafe fn execute_bytes<R>(bytes: &[u8]) -> R {
 
     buffer.as_slice_mut().copy_from_slice(bytes);
 
-    let (data, _, _) = buffer.get_raw_parts();
-    let fnptr: extern "C" fn() -> R = std::mem::transmute(data as *const ());
+    let (data, size, _) = buffer.get_raw_parts();
+    let fnptr: extern "C" fn() -> R = std::mem::transmute(data);
+
+    let _result = os::agnostic::flush_instruction_cache(data as *mut c_void, size);
 
     fnptr()
 }
