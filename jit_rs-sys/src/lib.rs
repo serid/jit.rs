@@ -1,4 +1,4 @@
-mod bindings;
+pub mod bindings;
 
 #[cfg(test)]
 mod tests {
